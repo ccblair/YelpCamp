@@ -55,15 +55,10 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 app.use((req, res, next) => {
+  res.locals.currentUser = req.user;
   res.locals.success = req.flash("success");
   res.locals.error = req.flash("error");
   next();
-});
-
-app.get("/fakeUser", async (req, res) => {
-  const user = new User({ email: "chris@gmail.com", username: "shimla" });
-  const newUser = await User.register(user, "treadstone");
-  res.send(newUser);
 });
 
 app.use("/", userRoutes);
